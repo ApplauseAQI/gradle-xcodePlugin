@@ -324,7 +324,7 @@ class XcodeBuildPluginExtension {
 			}
 
 
-			for (String version in versions) {
+			for (String version in versions.sort(false)) {
 				Destination destination = new Destination();
 				destination.platform = 'iOS Simulator'
 				destination.name = name

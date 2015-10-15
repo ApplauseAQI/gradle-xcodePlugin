@@ -290,13 +290,12 @@ class XcodeBuildPluginExtensionTest {
 
 		new File("build/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator7.0.sdk").mkdirs()
 		new File("build/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator7.1.sdk").mkdirs()
-		new File("build/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk").mkdirs()
 
 		mockControl.play {
 			extension.createXcode5DeviceList()
 		}
 
-		assert extension.destinations.size() == 3 : "expected 1 elements in the availableSimulators list but was: " + extension.destinations.size()
+		assert extension.destinations.size() == 2 : "expected 1 elements in the availableSimulators list but was: " + extension.destinations.size()
 
 		Destination destination =  extension.destinations[0];
 
@@ -305,7 +304,6 @@ class XcodeBuildPluginExtensionTest {
 		assert destination.os.equals("7.0")
 
 		assert extension.destinations[1].os.equals("7.1");
-		assert extension.destinations[2].os.equals("6.0");
 
 	}
 

@@ -116,12 +116,12 @@ class XcodeTestTask extends AbstractXcodeBuildTask {
 
 			def destinationParameters = []
 
-			if (destination.platform != null) {
-				destinationParameters << "platform=" + destination.platform
-			}
 			if (destination.id != null) {
 				destinationParameters << "id=" + destination.id
 			} else {
+				if (destination.platform != null) {
+                                	destinationParameters << "platform=" + destination.platform
+                        	}
 				if (destination.name != null) {
 					destinationParameters << "name=" + destination.name
 				}
