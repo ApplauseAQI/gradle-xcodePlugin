@@ -144,11 +144,11 @@ class XcodeBuildPluginExtension {
 
 
 	boolean isDeviceBuild() {
-		return this.sdk.startsWith("iphoneos")
+		return (this.sdk == null || this.sdk.startsWith("iphoneos"))
 	}
 
 	boolean isSimulatorBuild() {
-		return this.sdk.startsWith("iphonesimulator")
+		return (this.sdk != null && this.sdk.startsWith("iphonesimulator"))
 	}
 
 

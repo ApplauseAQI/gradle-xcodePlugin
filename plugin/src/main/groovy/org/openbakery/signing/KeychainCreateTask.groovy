@@ -26,7 +26,7 @@ class KeychainCreateTask extends AbstractKeychainTask {
 		this.description = "Create a keychain that is used for signing the app"
 
 		this.setOnlyIf {
-			return !project.xcodebuild.sdk.startsWith("iphonesimulator")
+			return (project.xcodebuild.sdk == null || !project.xcodebuild.sdk.startsWith("iphonesimulator"))
 		}
 	}
 
@@ -34,7 +34,7 @@ class KeychainCreateTask extends AbstractKeychainTask {
 	def create() {
 
 
-		if (project.xcodebuild.sdk.startsWith("iphonesimulator")) {
+		if (project.xcodebuild.sdk != null && project.xcodebuild.sdk.startsWith("iphonesimulator")) {
 			logger.lifecycle("The simulator build does not need a provisioning profile");
 			return
 		}

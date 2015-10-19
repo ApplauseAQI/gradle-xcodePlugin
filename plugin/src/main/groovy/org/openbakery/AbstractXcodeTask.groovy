@@ -74,7 +74,11 @@ abstract class AbstractXcodeTask extends DefaultTask {
 	 */
 	def getAppBundleName() {
 		//println project.xcodebuild.symRoot
-		def buildOutputDirectory = new File(project.xcodebuild.symRoot, project.xcodebuild.configuration + "-" + project.xcodebuild.sdk)
+		def sdk = "iphoneos"
+                if (project.xcodebuild.sdk != null) {
+                        sdk = project.xcodebuild.sdk
+                }
+		def buildOutputDirectory = new File(project.xcodebuild.symRoot, project.xcodebuild.configuration + "-" + sdk)
 		def fileList = buildOutputDirectory.list(
 						[accept: {d, f -> f ==~ /.*app/ }] as FilenameFilter
 		).toList()

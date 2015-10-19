@@ -57,7 +57,7 @@ abstract class AbstractXcodeBuildTask extends DefaultTask {
 			commandList.add(project.xcodebuild.target)
 		}
 
-		if (project.xcodebuild.sdk.startsWith("iphoneos") && project.xcodebuild.signing != null && project.xcodebuild.signing.identity != null) {
+		if ((project.xcodebuild.sdk == null || project.xcodebuild.sdk.startsWith("iphoneos")) && project.xcodebuild.signing != null && project.xcodebuild.signing.identity != null) {
 			commandList.add("CODE_SIGN_IDENTITY=" + project.xcodebuild.signing.identity)
 			commandList.add("CODE_SIGN_RESOURCE_RULES_PATH=\$(SDKROOT)/ResourceRules.plist")
 			String uuid = provisioningProfileIdReader.readProvisioningProfileUUID(project.xcodebuild.signing.mobileProvisionFile)
@@ -82,7 +82,7 @@ abstract class AbstractXcodeBuildTask extends DefaultTask {
 		commandList.add("SHARED_PRECOMPS_DIR=" + project.xcodebuild.sharedPrecompsDir.absolutePath)
 
 
-		if (project.xcodebuild.sdk.startsWith("iphoneos") && project.xcodebuild.signing.keychainPathInternal.exists()) {
+		if ((project.xcodebuild.sdk == null || project.xcodebuild.sdk.startsWith("iphoneos")) && project.xcodebuild.signing.keychainPathInternal.exists()) {
 			commandList.add('OTHER_CODE_SIGN_FLAGS=--keychain=' + project.xcodebuild.signing.keychainPathInternal.path);
 		}
 

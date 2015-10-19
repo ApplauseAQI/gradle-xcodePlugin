@@ -26,14 +26,14 @@ class ProvisioningInstallTask extends AbstractXcodeTask {
 		this.description = "Installs the given provisioning profile"
 
 		this.setOnlyIf {
-			return !project.xcodebuild.sdk.startsWith("iphonesimulator")
+			return (project.xcodebuild.sdk == null || !project.xcodebuild.sdk.startsWith("iphonesimulator"))
 		}
 	}
 
 	@TaskAction
 	def install() {
 
-		if (project.xcodebuild.sdk.startsWith("iphonesimulator")) {
+		if (project.xcodebuild.sdk != null && project.xcodebuild.sdk.startsWith("iphonesimulator")) {
 			logger.lifecycle("The simulator build does not need a provisioning profile")
 			return
 		}

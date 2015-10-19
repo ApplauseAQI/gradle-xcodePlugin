@@ -39,11 +39,14 @@ class CodesignTask extends AbstractXcodeTask {
 	 * @return
 	 */
 	String preparePackageApplication() {
-
+		def sdk = "iphoneos"
+		if (project.xcodebuild.sdk != null) {
+                        sdk = project.xcodebuild.sdk
+                }
 		def commandListFindPackageApplication = [
 						project.xcodebuild.xcrunCommand,
 						"-sdk",
-						project.xcodebuild.sdk,
+						sdk,
 						"--find",
 						"PackageApplication"
 		];
@@ -89,7 +92,7 @@ class CodesignTask extends AbstractXcodeTask {
 
 	@TaskAction
 	def codesign() {
-		if (!project.xcodebuild.sdk.startsWith("iphoneos")) {
+		if (project.xcodebuild.sdk != null && !project.xcodebuild.sdk.startsWith("iphoneos")) {
 			logger.lifecycle("not a device build, so no codesign needed")
 			return
 		}
@@ -98,7 +101,11 @@ class CodesignTask extends AbstractXcodeTask {
 		}
 
 		logger.debug("SymRoot: {}", project.xcodebuild.symRoot)
-		def buildOutputDirectory = new File(project.xcodebuild.symRoot, project.xcodebuild.configuration + "-" + project.xcodebuild.sdk)
+		def sdk = "iphoneos"
+		if (project.xcodebuild.sdk != null) {
+			sdk = project.xcodebuild.sdk
+		}
+		def buildOutputDirectory = new File(project.xcodebuild.symRoot, project.xcodebuild.configuration + "-" + sdk)
 		def fileList = buildOutputDirectory.list(
 						[accept: {d, f -> f ==~ /.*app/ }] as FilenameFilter
 		).toList()
