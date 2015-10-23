@@ -259,9 +259,10 @@ class XcodeTestTask extends AbstractXcodeBuildTask {
 			def testFailedMatcher = TEST_FAILED_PATTERN.matcher(line)
 
 			if (testSuccessMatcher.matches() || testFailedMatcher.matches()) {
-				testRun ++;
+				if (testSuites != null && !testSuites.isEmpty() && testSuites.size() == 1 && testSuites.count('All tests') == 1) {
+					testSuites.remove('All tests')
+				}
 			}
-
 
 			if (testSuites != null && testSuites.isEmpty()) {
 				Destination destination = project.xcodebuild.destinations[testRun]
@@ -283,6 +284,10 @@ class XcodeTestTask extends AbstractXcodeBuildTask {
 					output.append(line)
 				}
 			}
+
+			if (testSuccessMatcher.matches() || testFailedMatcher.matches()) {
+				testRun ++;
+			}
 		}
 		reader.close()
 		store()
@@ -298,9 +303,6 @@ class XcodeTestTask extends AbstractXcodeBuildTask {
 
 
 	def store() {
-
-
-
 		FileWriter writer = new FileWriter(new File(outputDirectory, "test-results.xml"))
 
 		def xmlBuilder = new MarkupBuilder(writer)
